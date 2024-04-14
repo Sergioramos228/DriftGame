@@ -1,25 +1,33 @@
-using System;
 using UnityEngine;
 
-[Serializable]
 public struct CarBuild
 {
-    public CarBuild(Color color, string name)
+    public const int BytesForColor = 12;
+    public Color Color;
+
+    public CarBuild(Color color)
     {
         Color = color;
-        Name = name;
     }
 
-    public Color Color;
-    public string Name;
-
-    public string Serialize()
+    public CarBuild(byte[] bytes)
     {
-        return JsonUtility.ToJson(this);
+        byte[] color = new byte[BytesForColor];
+
+        for (int i = 0; i < BytesForColor; i++)
+        {
+            color[i] = bytes[i];
+        }
+
+        Color = (Color)PUNSerializationService.DeserializeColor(color);
     }
 
-    public static CarBuild Deserialize(string json)
+    public byte[] ConvertForMessage()
     {
-        return JsonUtility.FromJson<CarBuild>(json);
+        byte[] color = PUNSerializationService.SerializeColor(Color);
+
+        byte[] result = new byte[BytesForColor];
+        color.CopyTo(result, 0);
+        return result;
     }
 }

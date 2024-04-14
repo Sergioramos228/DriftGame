@@ -8,31 +8,30 @@ public class CarBuildUnpacker : MonoBehaviourPun
     [SerializeField] private NameView _nameView;
 
     private PhotonView _photonView;
-    private string _myID;
 
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
-        _myID = PhotonNetwork.LocalPlayer.UserId;
     }
 
-    public void ApplyCarBuild(string jsonCarBuild)
+    public void ApplyCarBuild()
     {
-        SetJsonCarBuild(jsonCarBuild);
-        _photonView.RPC("SendBuild", RpcTarget.AllBuffered, jsonCarBuild, _myID);
+        if (_photonView.IsMine)
+            _photonView.RPC("SendBuild", RpcTarget.AllBuffered);
+
+        SetCarBuild();
     }
 
     [PunRPC]
-    public void SendBuild(string jsonCarBuild, string id)
+    public void SendBuild()
     {
-        if (id == _myID)
-            SetJsonCarBuild(jsonCarBuild);
+        SetCarBuild();
     }
 
-    private void SetJsonCarBuild(string jsonCarBuild)
+    private void SetCarBuild()
     {
-        CarBuild carBuild = JsonUtility.FromJson<CarBuild>(jsonCarBuild);
-        _nameView.ApplyName(carBuild.Name);
+        _nameView.ApplyName(_photonView.Owner.NickName);
+        CarBuild carBuild = (CarBuild)_photonView.Owner.CustomProperties["Settings"];
         _colorSetter.ApplyColor(carBuild.Color);
     }
 }

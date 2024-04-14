@@ -57,7 +57,7 @@ public class UIView : MonoBehaviour
 
     private string GetFormatString(float value, int count)
     {
-        string result = ((int)value).ToString();
+        string result = string.Format("{0:000}", (int)value);
 
         if(result.Length > count)
             return result.Substring(0, 3);

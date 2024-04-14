@@ -17,6 +17,5 @@ public class Menu : MonoBehaviour
         Connect = 0,
         Wait,
         Garage,
-        Room
     }
 }

@@ -24,7 +24,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        _menu.SetScreens(Menu.Screen.Room);
+        //_menu.SetScreens(Menu.Screen.Room);
     }
 
     public override void OnDisconnected(DisconnectCause cause)

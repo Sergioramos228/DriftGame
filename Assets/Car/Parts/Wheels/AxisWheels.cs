@@ -2,8 +2,8 @@
 
 public class AxisWheels : MonoBehaviour
 {
-    private const float AckermanFactor = 0.7f;
-    private const float MaxAngle = 73;
+    private const float AckermanFactor = 0.74f;
+    private const float MaxAngle = 62;
 
     [SerializeField] private Wheel _left;
     [SerializeField] private Wheel _right;

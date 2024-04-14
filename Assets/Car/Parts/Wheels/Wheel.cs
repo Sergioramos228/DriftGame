@@ -9,12 +9,12 @@ public class Wheel : MonoBehaviour
     private Vector3 _worldPosition;
     private Quaternion _worldRotation;
     private WheelFrictionCurve _sideway;
-    private float _sidewayExtremumSlip;
+    private float _stiffness;
 
     private void Awake()
     {
         _sideway = _collider.sidewaysFriction;
-        _sidewayExtremumSlip = _sideway.extremumSlip;
+        _stiffness = _sideway.stiffness;
     }
 
     public void SetAngle(float value)
@@ -34,10 +34,10 @@ public class Wheel : MonoBehaviour
 
     public void SetSidewaySlip(float value = -1)
     {
-        if (value < 0)
-            _sideway.extremumSlip = _sidewayExtremumSlip;
+        if (value <= 0)
+            _sideway.stiffness = _stiffness;
         else
-            _sideway.extremumSlip = value;
+            _sideway.stiffness = value;
 
         _collider.sidewaysFriction = _sideway;
     }

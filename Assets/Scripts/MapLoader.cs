@@ -1,50 +1,50 @@
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
-using System.Collections;
+using UnityEngine.UI;
+using ExitGames.Client.Photon;
 
 public class MapLoader : MonoBehaviourPunCallbacks
 {
     [SerializeField] private string _levelName = "Game";
     [SerializeField] private TMP_InputField _temp;
+    [SerializeField] private TraceSelector _raceSelector;
     [SerializeField] private ColorPicker _colorPicker;
+    [SerializeField] private Button _startGame;
 
-    private PhotonView _photonView;
+    private void Awake()
+    {
+        PUNSerializationService.Register();
+        _startGame.onClick.AddListener(OnClickStartGame);
+    }
 
     public override void OnJoinedRoom()
     {
-        base.OnJoinedRoom();
-        _photonView = GetComponent<PhotonView>();
         PhotonNetwork.AutomaticallySyncScene = false;
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 60;
 
-        if(PhotonNetwork.IsMasterClient)
-            LoadScene();
-        else
-            StartCoroutine(WaitForMasterClient());
-    }
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+            roomProperties["Trace"] = (int)_raceSelector.Current;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+        }
 
-    private void LoadScene()
-    {
-        CarBuild build = new CarBuild(_colorPicker.Color, _temp.text);
-        _photonView.RPC("SetProperties", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, build.Serialize());
         PhotonNetwork.LoadLevel(_levelName);
     }
 
-    private IEnumerator WaitForMasterClient()
+    private void OnClickStartGame()
     {
-        while (!PhotonNetwork.IsConnectedAndReady)
-        {
-            yield return null;
-        }
-
-        LoadScene();
+        SetProperties();
+        PhotonNetwork.JoinRandomOrCreateRoom();
     }
 
-    [PunRPC]
-    public void SetProperties(string actorGUID, string jsonDataBuild)
+    public void SetProperties()
     {
-        PhotonNetwork.CurrentRoom.CustomProperties.Add($"CarBuild_{actorGUID}", jsonDataBuild);
+        Hashtable Properties = PhotonNetwork.LocalPlayer.CustomProperties;
+        Properties.Add("Settings", new CarBuild(_colorPicker.Color));
+        PhotonNetwork.LocalPlayer.SetCustomProperties(Properties);
+        PhotonNetwork.LocalPlayer.NickName = _temp.text;
     }
 }
