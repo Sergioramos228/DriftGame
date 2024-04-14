@@ -28,9 +28,9 @@ public class TraceLeaderboardPlayerView : MonoBehaviour
         ShowCarValues();
     }
 
-    public void Hide()
+    public void ChangeVision(float newVision)
     {
-        _visionController.alpha = 0;
+        _visionController.alpha = newVision;
     }
 
     public void OnCarValueChanged()

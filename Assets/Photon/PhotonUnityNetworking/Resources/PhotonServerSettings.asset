@@ -48,6 +48,7 @@ MonoBehaviour:
   - SetParametrs
   - SetProperties
   - SendBuild
+  - ConnectCar
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

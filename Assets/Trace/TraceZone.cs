@@ -4,18 +4,26 @@ public class TraceZone : MonoBehaviour
 {
     [SerializeField] private Transform _transform;
     [SerializeField] private MeshRenderer _view;
-    [SerializeField] private int _prioritized = 0;
+    [SerializeField] private float _workingDistance = 3f;
 
     public Vector3 Point => _transform.position;
     public Vector3 Forward => _transform.forward;
+    public float WorkingDistance => _workingDistance;
+
+    private void Awake()
+    {
+        Hide();
+    }
 
     public void Show()
     {
-        _view.enabled = true;
+        if (_view != null)
+            _view.enabled = true;
     }
 
     public void Hide()
     {
-        _view.enabled = false;
+        if (_view != null)
+            _view.enabled = false;
     }
 }

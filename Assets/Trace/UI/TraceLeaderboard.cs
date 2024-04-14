@@ -24,9 +24,10 @@ public class TraceLeaderboard : MonoBehaviour
     {
         _count = count;
 
+        for (int i = 0; i < count; i++)
+            _players[i].ChangeVision(1);
+
         for (int i = _count; i < _players.Count; i++)
-        {
-            _players[i].Hide();
-        }
+            _players[i].ChangeVision(0);
     }
 }

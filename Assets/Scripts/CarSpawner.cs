@@ -8,9 +8,9 @@ public class CarSpawner : MonoBehaviour
     [SerializeField] private UIView _view;
     [SerializeField] private TraceLeaderboardPlayerView _playerView;
 
-    public Car Load(Vector3 position)
+    public Car Load(Vector3 position, Quaternion forward)
     {
-        GameObject player = PhotonNetwork.Instantiate(_prefab.name, position, Quaternion.identity);
+        GameObject player = PhotonNetwork.Instantiate(_prefab.name, position, forward);
         CarPhysic carPhysic = player.GetComponentInChildren<CarPhysic>();
         DriftProcessor driftProcessor = player.GetComponentInChildren<DriftProcessor>();
         CarBooster booster = player.GetComponentInChildren<CarBooster>();

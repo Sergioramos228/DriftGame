@@ -48,6 +48,11 @@ public class TraceView : MonoBehaviour
         _circlesCurrent.text = circle.ToString();
     }
 
+    private void OnPlayerCountChanged(int count)
+    {
+        _leaderboard.Initialize(count);
+    }
+
     private void SubscribeToTrace(bool isSubscribed)
     {
         if (isSubscribed)
@@ -55,12 +60,14 @@ public class TraceView : MonoBehaviour
             _trace.LeaderboardChanged += OnLeaderboardChanged;
             _trace.CirclesChanged += OnCirclesChanged;
             _trace.TimeChanged += OnTimeChanged;
+            _trace.CountPlayerChanged += OnPlayerCountChanged;
         }
         else
         {
             _trace.LeaderboardChanged -= OnLeaderboardChanged;
             _trace.CirclesChanged -= OnCirclesChanged;
             _trace.TimeChanged -= OnTimeChanged;
+            _trace.CountPlayerChanged -= OnPlayerCountChanged;
         }
     }
 }
