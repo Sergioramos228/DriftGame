@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TraceLeaderboard : MonoBehaviour
+public class RaceLeaderboard : MonoBehaviour
 {
-    [SerializeField] private List<TraceLeaderboardPlayerView> _players;
+    [SerializeField] private List<RaceLeaderboardPlayerView> _players;
 
     private int _count;
 

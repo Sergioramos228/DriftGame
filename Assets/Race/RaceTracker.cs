@@ -4,7 +4,7 @@ using System.Linq;
 
 public class RaceTracker
 {
-    private List<TraceZone> _way = new List<TraceZone>();
+    private List<RaceZone> _way = new List<RaceZone>();
     private List<CarRacingTracker> _observers = new List<CarRacingTracker>();
     private Dictionary<Car, int> _carsCircles = new Dictionary<Car, int>();
     private List<Car> _leaderboard = new List<Car>();
@@ -12,9 +12,9 @@ public class RaceTracker
     private int _maxCircles;
     private Car _myCar;
 
-    public RaceTracker(IEnumerable<TraceZone> way, int maxCircles, Car myCar)
+    public RaceTracker(IEnumerable<RaceZone> way, int maxCircles, Car myCar)
     {
-        foreach (TraceZone zone in way)
+        foreach (RaceZone zone in way)
             _way.Add(zone);
 
         _maxCircles = maxCircles;
@@ -22,7 +22,7 @@ public class RaceTracker
     }
 
     public event Action<IEnumerable<Car>> LeaderboardChanged;
-    public event Action<Car> CarFinishedTrace;
+    public event Action<Car> CarFinishedRace;
     public event Action<int> WeFinishedCircle;
 
     public void Check()
@@ -41,6 +41,11 @@ public class RaceTracker
         AddCarToLeaderboard(car);
     }
 
+    public int GetCarPosition(Car car)
+    {
+        return _leaderboard.IndexOf(car) + 1;
+    }
+
     private void AddCarToLeaderboard(Car car)
     {
         CarRacingTracker observer = new CarRacingTracker(car, _way);
@@ -57,7 +62,7 @@ public class RaceTracker
             WeFinishedCircle?.Invoke(_carsCircles[observer.Car]);
 
         if (_carsCircles[observer.Car] == _maxCircles)
-            CarFinishedTrace?.Invoke(observer.Car);
+            CarFinishedRace?.Invoke(observer.Car);
     }
 
     private void UpdateLeaderboard()

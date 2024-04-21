@@ -2,34 +2,34 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
-public class TraceView : MonoBehaviour
+public class RaceView : MonoBehaviour
 {
-    [SerializeField] private TraceLeaderboard _leaderboard;
+    [SerializeField] private RaceLeaderboard _leaderboard;
     [SerializeField] private TMP_Text _timerMinutes;
     [SerializeField] private TMP_Text _timerSeconds;
     [SerializeField] private TMP_Text _circlesCurrent;
     [SerializeField] private TMP_Text _circlesMaximum;
 
-    private Trace _trace;
+    private Race _race;
 
     private void OnEnable()
     {
-        if (_trace != null)
-            SubscribeToTrace(true);
+        if (_race != null)
+            SubscribeToRace(true);
     }
 
     private void OnDisable()
     {
-        if (_trace != null)
-            SubscribeToTrace(false);
+        if (_race != null)
+            SubscribeToRace(false);
     }
 
-    public void ApplyTrace(Trace trace)
+    public void ApplyTrace(Race trace)
     {
-        _trace = trace;
-        SubscribeToTrace(true);
-        _leaderboard.Initialize(_trace.CountPlayers);
-        _circlesMaximum.text = _trace.CountCircles.ToString();
+        _race = trace;
+        SubscribeToRace(true);
+        _leaderboard.Initialize(_race.CountPlayers);
+        _circlesMaximum.text = _race.CountCircles.ToString();
     }
     
     private void OnTimeChanged(int minutes, int seconds)
@@ -53,21 +53,21 @@ public class TraceView : MonoBehaviour
         _leaderboard.Initialize(count);
     }
 
-    private void SubscribeToTrace(bool isSubscribed)
+    private void SubscribeToRace(bool isSubscribed)
     {
         if (isSubscribed)
         {
-            _trace.LeaderboardChanged += OnLeaderboardChanged;
-            _trace.CirclesChanged += OnCirclesChanged;
-            _trace.TimeChanged += OnTimeChanged;
-            _trace.CountPlayerChanged += OnPlayerCountChanged;
+            _race.LeaderboardChanged += OnLeaderboardChanged;
+            _race.CirclesChanged += OnCirclesChanged;
+            _race.TimeChanged += OnTimeChanged;
+            _race.CountPlayerChanged += OnPlayerCountChanged;
         }
         else
         {
-            _trace.LeaderboardChanged -= OnLeaderboardChanged;
-            _trace.CirclesChanged -= OnCirclesChanged;
-            _trace.TimeChanged -= OnTimeChanged;
-            _trace.CountPlayerChanged -= OnPlayerCountChanged;
+            _race.LeaderboardChanged -= OnLeaderboardChanged;
+            _race.CirclesChanged -= OnCirclesChanged;
+            _race.TimeChanged -= OnTimeChanged;
+            _race.CountPlayerChanged -= OnPlayerCountChanged;
         }
     }
 }

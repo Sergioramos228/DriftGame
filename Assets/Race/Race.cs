@@ -1,27 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
-public class Trace : MonoBehaviour
+public class Race : MonoBehaviour
 {
     private const int SecondsInMinute = 60;
     private const int Second = 1;
 
-    [SerializeField] private List<TraceZone> _way;
+    [SerializeField] private List<RaceZone> _way;
     [SerializeField] private int _countOfCircles;
-    [SerializeField] private List<TraceZone> _startPositions;
-    [SerializeField] private int _secondsToTrace = 120;
+    [SerializeField] private List<RaceZone> _startPositions;
+    [SerializeField] private int _raceSeconds = 120;
 
     private List<Car> _cars;
     private RaceTracker _raceTracker;
 
     public int CountPlayers => _cars.Count;
     public int CountCircles => _countOfCircles;
+
     public event Action<int, int> TimeChanged;
     public event Action<IEnumerable<Car>> LeaderboardChanged;
     public event Action<int> CirclesChanged;
     public event Action<int> CountPlayerChanged;
+    public event Action<int> WeFinished;
+    public event Action HasExitTime;
 
     private void Awake()
     {
@@ -34,7 +38,7 @@ public class Trace : MonoBehaviour
         if (_raceTracker != null)
         {
             _raceTracker.WeFinishedCircle -= OnFinishCircle;
-            _raceTracker.CarFinishedTrace -= OnCarFinishTrace;
+            _raceTracker.CarFinishedRace -= OnCarFinish;
             _raceTracker.LeaderboardChanged -= OnLeaderboardChanged;
         }
     }
@@ -52,21 +56,23 @@ public class Trace : MonoBehaviour
         int minutes;
         yield return null;
 
-        while (_secondsToTrace > 0)
+        while (_raceSeconds > 0)
         {
-            _secondsToTrace -= Second;
-            seconds = _secondsToTrace % SecondsInMinute;
-            minutes = (int)Math.Floor((decimal)_secondsToTrace / SecondsInMinute);
+            _raceSeconds -= Second;
+            seconds = _raceSeconds % SecondsInMinute;
+            minutes = (int)Math.Floor((decimal)_raceSeconds / SecondsInMinute);
             TimeChanged?.Invoke(minutes, seconds);
             yield return second;
         }
+
+        HasExitTime?.Invoke();
     }
-    
+
     public void Initialize(Car car)
     {
         _raceTracker = new RaceTracker(_way, _countOfCircles, car);
         _raceTracker.WeFinishedCircle += OnFinishCircle;
-        _raceTracker.CarFinishedTrace += OnCarFinishTrace;
+        _raceTracker.CarFinishedRace += OnCarFinish;
         _raceTracker.LeaderboardChanged += OnLeaderboardChanged;
         ApplyCar(car);
     }
@@ -87,7 +93,7 @@ public class Trace : MonoBehaviour
         LeaderboardChanged?.Invoke(_cars);
     }
 
-    public TraceZone GetStartPosition(int number)
+    public RaceZone GetStartPosition(int number)
     {
         return _startPositions[number];
     }
@@ -97,14 +103,17 @@ public class Trace : MonoBehaviour
         LeaderboardChanged?.Invoke(leaderboard);
     }
 
-    private void OnCarFinishTrace(Car car)
+    private void OnCarFinish(Car car)
     {
-        //to do
+        if (car.IsMine)
+        {
+            int ourPosition = _raceTracker.GetCarPosition(car);
+            WeFinished?.Invoke(ourPosition);
+        }
     }
 
     private void OnFinishCircle(int circle)
     {
         CirclesChanged?.Invoke(circle);
     }
-
 }

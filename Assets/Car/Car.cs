@@ -7,6 +7,10 @@ public class Car : MonoBehaviour
     [SerializeField] private Transform _body;
     [SerializeField] private DriftProcessor _drift;
     [SerializeField] private NameView _nameView;
+    [SerializeField] private CarController _controller;
+
+    private Race _race;
+    private PhotonView _photonView;
 
     public float Drift { get; private set; }
     public int MyId { get; private set; }
@@ -18,9 +22,9 @@ public class Car : MonoBehaviour
 
     private void Awake()
     {
-        PhotonView view = GetComponent<PhotonView>();
-        MyId = view.ViewID;
-        IsMine = view.IsMine;
+        _photonView = GetComponent<PhotonView>();
+        MyId = _photonView.ViewID;
+        IsMine = _photonView.IsMine;
     }
 
     private void OnEnable()
@@ -30,6 +34,40 @@ public class Car : MonoBehaviour
 
     private void OnDisable()
     {
+        _drift.ScoreChange -= OnScoreChanged;
+    }
+
+    private void OnExitTime()
+    {
+        Finish(0);
+    }
+
+    public void ConnectToRace(Race race)
+    {
+        if (_race != null)
+            return;
+
+        _race = race;
+        _race.WeFinished += Finish;
+        _race.HasExitTime += OnExitTime;
+    }
+
+    private void Finish(int place)
+    {
+        FinishDriftCoefficients finishDriftCoefficients = new FinishDriftCoefficients();
+        float coefficient = finishDriftCoefficients.GetCoefficient(place);
+        float gold = Drift * coefficient;
+        ExitGames.Client.Photon.Hashtable mySettings = _photonView.Owner.CustomProperties;
+
+        if (mySettings.ContainsKey("Gold"))
+        {
+            float currentGold = (float)mySettings["Gold"];
+            mySettings["Gold"] = currentGold + gold;
+            _photonView.Owner.CustomProperties = mySettings;
+        }
+
+        _controller.enabled = false;
+        _drift.enabled = false;
         _drift.ScoreChange -= OnScoreChanged;
     }
 

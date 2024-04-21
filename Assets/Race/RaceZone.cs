@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class TraceZone : MonoBehaviour
+public class RaceZone : MonoBehaviour
 {
     [SerializeField] private Transform _transform;
     [SerializeField] private MeshRenderer _view;
-    [SerializeField] private float _workingDistance = 3f;
+    [SerializeField] private float _workingDistance = 10f;
 
     public Vector3 Point => _transform.position;
     public Vector3 Forward => _transform.forward;

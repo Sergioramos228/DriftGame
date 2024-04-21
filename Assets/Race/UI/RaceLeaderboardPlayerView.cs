@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class TraceLeaderboardPlayerView : MonoBehaviour
+public class RaceLeaderboardPlayerView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _name;
     [SerializeField] private TMP_Text _points;

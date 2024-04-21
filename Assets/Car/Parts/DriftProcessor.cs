@@ -8,7 +8,7 @@ public class DriftProcessor : MonoBehaviour
     private const float MinSpeedToScore = 30;
 
     [SerializeField] private CarPhysic _physic;
-    [SerializeField] private float _driftBackWeelsStiffnes;
+    [SerializeField] private float _driftBackWheelsStiffness;
     [SerializeField] private float _driftSensitivityAngle = 4.8f;
 
     private bool _isInDrift;
@@ -37,7 +37,7 @@ public class DriftProcessor : MonoBehaviour
     {
         if (_angle > _driftSensitivityAngle && _isInDrift == false)
         {
-            _physic.EnterDrift(_driftBackWeelsStiffnes);
+            _physic.EnterDrift(_driftBackWheelsStiffness);
             _isInDrift = true;
         }
         else if (_angle < _driftSensitivityAngle && _isInDrift)

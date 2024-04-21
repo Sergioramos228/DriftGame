@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class CarRacingTracker
 {
-    private Queue<TraceZone> _traceZones;
-    private List<TraceZone> _fullWay;
-    private TraceZone _currentZone;
+    private Queue<RaceZone> _raceZones;
+    private List<RaceZone> _fullWay;
+    private RaceZone _currentZone;
     private Vector3 _vector;
 
-    public CarRacingTracker(Car car, IEnumerable<TraceZone> way)
+    public CarRacingTracker(Car car, IEnumerable<RaceZone> way)
     {
         Car = car;
         CurrentPoint = 0;
-        _traceZones = new Queue<TraceZone>();
-        _fullWay = new List<TraceZone>();
+        _raceZones = new Queue<RaceZone>();
+        _fullWay = new List<RaceZone>();
 
-        foreach (TraceZone traceZone in way)
+        foreach (RaceZone raceZone in way)
         {
-            _traceZones.Enqueue(traceZone);
-            _fullWay.Add(traceZone);
+            _raceZones.Enqueue(raceZone);
+            _fullWay.Add(raceZone);
         }
 
         SwitchNextZone();
@@ -47,10 +47,10 @@ public class CarRacingTracker
     private void Reset()
     {
         CurrentPoint = 0;
-        _traceZones.Clear();
+        _raceZones.Clear();
 
-        foreach(TraceZone traceZone in _fullWay)
-            _traceZones.Enqueue(traceZone);
+        foreach(RaceZone traceZone in _fullWay)
+            _raceZones.Enqueue(traceZone);
 
         SwitchNextZone();
     }
@@ -60,22 +60,22 @@ public class CarRacingTracker
         if (Car.IsMine)
             _currentZone?.Hide();
 
-        if (_traceZones.Count == 0)
+        if (_raceZones.Count == 0)
         {
             Reset();
             Finished?.Invoke(this);
             return;
         }
 
-        else if (_traceZones.Count == 1)
+        else if (_raceZones.Count == 1)
         {
-            _currentZone = _traceZones.Dequeue();
+            _currentZone = _raceZones.Dequeue();
             _vector = _currentZone.Forward;
         }
         else
         {
-            _currentZone = _traceZones.Dequeue();
-            _vector = (_traceZones.Peek().Point - _currentZone.Point).normalized;
+            _currentZone = _raceZones.Dequeue();
+            _vector = (_raceZones.Peek().Point - _currentZone.Point).normalized;
         }
 
         CurrentPoint++;

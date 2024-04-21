@@ -405,6 +405,7 @@ MonoBehaviour:
   _body: {fileID: 1456914244928974885}
   _drift: {fileID: 7205561166116897205}
   _nameView: {fileID: 8222557333551337678}
+  _controller: {fileID: 1849530985320986637}
 --- !u!1 &952237277840507499
 GameObject:
   m_ObjectHideFlags: 0
@@ -2003,7 +2004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _physic: {fileID: 1008331510770241664}
-  _driftBackWeelsStiffnes: 0.4
+  _driftBackWheelsStiffness: 0
   _driftSensitivityAngle: 6
 --- !u!1 &7791077197411494395
 GameObject:
