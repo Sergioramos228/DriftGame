@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.Linq;
 
 [RequireComponent(typeof(PhotonView))]
 public class RaceLoader : MonoBehaviour
@@ -22,13 +23,24 @@ public class RaceLoader : MonoBehaviour
     {
         if (PhotonNetwork.IsConnected)
         {
-            int selectedRace = (int)PhotonNetwork.CurrentRoom.CustomProperties["Trace"];
+            int selectedRace = (int)PhotonNetwork.CurrentRoom.CustomProperties["Race"];
             _current = _races[selectedRace];
-            _shower.ApplyRace(_current);
-            RaceZone position = _current.GetStartPosition(PhotonNetwork.LocalPlayer.ActorNumber);
+            _shower.EnterRace(_current);
+            var sortedPlayers = PhotonNetwork.CurrentRoom.Players.OrderBy(c => c.Key).Select(c => c.Value);
+            int myPosition = 0;
+
+            foreach (var player in sortedPlayers)
+            {
+                if (player == PhotonNetwork.LocalPlayer)
+                    break;
+
+                myPosition++;
+            }
+
+            RaceZone position = _current.GetStartPosition(myPosition);
             Car car = _spawner.Load(position.Point, Quaternion.LookRotation(position.Forward), _current);
             _current.Initialize(car);
-            _view.ApplyTrace(_current);
+            _view.ApplyRace(_current);
             _current.UpdateInfo();
             _photonView.RPC("ConnectCar", RpcTarget.AllBuffered, car.MyId);
         }

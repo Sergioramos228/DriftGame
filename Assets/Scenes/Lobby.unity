@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 194500134}
   - component: {fileID: 194500135}
   m_Layer: 5
-  m_Name: SelectTrace
+  m_Name: SelectRace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -558,7 +558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nextButton: {fileID: 382044113}
   _previousButton: {fileID: 701758597}
-  _traceLabel: {fileID: 291936865}
+  _raceLabel: {fileID: 291936865}
 --- !u!1 &252127380
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 291936866}
   - component: {fileID: 291936865}
   m_Layer: 5
-  m_Name: TraceLabel
+  m_Name: RaceLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -943,7 +943,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.55
+  m_fontSize: 20.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1043,7 +1043,7 @@ GameObject:
   - component: {fileID: 320395648}
   - component: {fileID: 320395647}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,7 +1180,7 @@ GameObject:
   - component: {fileID: 382044114}
   - component: {fileID: 382044113}
   m_Layer: 5
-  m_Name: NextTrace
+  m_Name: NextRace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2089,7 +2089,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80.4
+  m_fontSize: 64.6
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2252,7 +2252,7 @@ GameObject:
   - component: {fileID: 701758598}
   - component: {fileID: 701758597}
   m_Layer: 5
-  m_Name: PreviousTrace
+  m_Name: PreviousRace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2910,7 +2910,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897859380}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 0.9570141, g: 0.98490566, b: 0.79349947, a: 1}
@@ -3010,9 +3010,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelName: Game
-  _temp: {fileID: 1778905254}
   _raceSelector: {fileID: 194500135}
-  _colorPicker: {fileID: 1554916907}
+  _properties: {fileID: 1262547509}
   _startGame: {fileID: 649908065}
 --- !u!114 &944654760
 MonoBehaviour:
@@ -3209,6 +3208,9 @@ MonoBehaviour:
   - {fileID: 1361477167}
   - {fileID: 686523310}
   _playerProperties: {fileID: 1262547509}
+  _lights:
+  - {fileID: 1105543280}
+  - {fileID: 897859382}
 --- !u!114 &975943268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3617,7 +3619,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105543278}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 0.82430047, g: 0.95737886, b: 0.97735846, a: 1}
@@ -4053,7 +4055,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.75
+  m_fontSize: 33.3
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4832,7 +4834,7 @@ GameObject:
   - component: {fileID: 1502469066}
   - component: {fileID: 1502469065}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5139,7 +5141,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1554916905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b34e9d7d4acf5d4fa00d2a068ba1553, type: 3}
+  m_Script: {fileID: 11500000, guid: a8121ff10462bca4b8205ebabb64dadb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _red: {fileID: 1150591124}
@@ -5464,7 +5466,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.75
+  m_fontSize: 33.3
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1

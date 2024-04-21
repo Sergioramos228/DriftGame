@@ -91,7 +91,7 @@ namespace Photon.Pun.UtilityScripts
             this.UpdateTeams();
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnEnteredRoom(Player newPlayer)
         {
             this.UpdateTeams();
         }

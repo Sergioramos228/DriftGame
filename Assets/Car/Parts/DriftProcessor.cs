@@ -14,14 +14,23 @@ public class DriftProcessor : MonoBehaviour
     private bool _isInDrift;
     private float _angle;
     private float _score;
+    private bool _isOnNetwork;
 
     public event Action<float> ScoreChange;
 
     private void FixedUpdate()
     {
+        if (_isOnNetwork)
+            return;
+
         _angle = _physic.CalculateDriftAngle();
         UpdateScore();
         UpdateState();
+    }
+
+    public void MoveToNetworkMode()
+    {
+        _isOnNetwork = true;
     }
 
     private void UpdateScore()

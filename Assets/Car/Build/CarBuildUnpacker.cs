@@ -31,7 +31,9 @@ public class CarBuildUnpacker : MonoBehaviourPun
     private void SetCarBuild()
     {
         _nameView.ApplyName(_photonView.Owner.NickName);
-        CarBuild carBuild = (CarBuild)_photonView.Owner.CustomProperties["Settings"];
-        _colorSetter.ApplyColor(carBuild.Color);
+        float coloR = (float)_photonView.Owner.CustomProperties["ColorR"];
+        float coloG = (float)_photonView.Owner.CustomProperties["ColorG"];
+        float coloB = (float)_photonView.Owner.CustomProperties["ColorB"];
+        _colorSetter.ApplyColor(new Color(coloR, coloG, coloB));
     }
 }

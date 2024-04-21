@@ -39,4 +39,10 @@ public class AxisWheels : MonoBehaviour
         _left.SetAngle(angle * MaxAngle * leftCoefficient);
         _right.SetAngle(angle * MaxAngle * rightCoefficient);
     }
+
+    public void ApplyUpgrades(float suspension, float wheels)
+    {
+        _left.ApplyUpgrades(suspension, wheels);
+        _right.ApplyUpgrades(suspension, wheels);
+    }
 }

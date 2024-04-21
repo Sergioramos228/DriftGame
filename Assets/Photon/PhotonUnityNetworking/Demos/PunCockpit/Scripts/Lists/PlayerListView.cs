@@ -72,7 +72,7 @@ namespace Photon.Pun.Demo.Cockpit
             PlayerDetailManager.SetPlayerTarget(player);
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnEnteredRoom(Player newPlayer)
         {
             //Debug.Log("PlayerListView:OnPlayerEnteredRoom:" + newPlayer);
 

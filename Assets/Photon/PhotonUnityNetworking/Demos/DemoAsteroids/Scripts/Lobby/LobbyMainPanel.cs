@@ -154,7 +154,7 @@ namespace Photon.Pun.Demo.Asteroids
             playerListEntries = null;
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnEnteredRoom(Player newPlayer)
         {
             GameObject entry = Instantiate(PlayerListEntryPrefab);
             entry.transform.SetParent(InsideRoomPanel.transform);

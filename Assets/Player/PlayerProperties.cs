@@ -15,12 +15,6 @@ public class PlayerProperties : MonoBehaviour
         LoadProperties();
     }
 
-    public void SaveProperties()
-    {
-        foreach (KeyValuePair<TypesOfPlayerProperties, float> property in _properties)
-            PlayerPrefs.SetFloat(property.Key.ToString(), property.Value);
-    }
-
     public void SetProperty(TypesOfPlayerProperties property, float value)
     {
         if (_properties.ContainsKey(property))

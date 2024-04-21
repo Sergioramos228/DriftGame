@@ -19,12 +19,16 @@ public class Car : MonoBehaviour
     public Vector3 Body => _body.position;
 
     public event Action ValueChanged;
+    public event Action<float> Finished;
 
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
         MyId = _photonView.ViewID;
         IsMine = _photonView.IsMine;
+
+        if (IsMine == false)
+            _drift.MoveToNetworkMode();
     }
 
     private void OnEnable()
@@ -35,6 +39,9 @@ public class Car : MonoBehaviour
     private void OnDisable()
     {
         _drift.ScoreChange -= OnScoreChanged;
+
+        if (_race != null)
+            _race.WeFinished -= Finish;
     }
 
     private void OnExitTime()
@@ -42,14 +49,14 @@ public class Car : MonoBehaviour
         Finish(0);
     }
 
-    public void ConnectToRace(Race race)
+    public void ConnectToRace(Race race, RaceTimer timer)
     {
         if (_race != null)
             return;
 
         _race = race;
         _race.WeFinished += Finish;
-        _race.HasExitTime += OnExitTime;
+        timer.HasExitTime += OnExitTime;
     }
 
     private void Finish(int place)
@@ -57,21 +64,21 @@ public class Car : MonoBehaviour
         FinishDriftCoefficients finishDriftCoefficients = new FinishDriftCoefficients();
         float coefficient = finishDriftCoefficients.GetCoefficient(place);
         float gold = Drift * coefficient;
-        ExitGames.Client.Photon.Hashtable mySettings = _photonView.Owner.CustomProperties;
-
-        if (mySettings.ContainsKey("Gold"))
-        {
-            float currentGold = (float)mySettings["Gold"];
-            mySettings["Gold"] = currentGold + gold;
-            _photonView.Owner.CustomProperties = mySettings;
-        }
-
+        Finished?.Invoke(gold);
         _controller.enabled = false;
         _drift.enabled = false;
         _drift.ScoreChange -= OnScoreChanged;
     }
 
     private void OnScoreChanged(float score)
+    {
+        Drift = score;
+        ValueChanged?.Invoke();
+        _photonView.RPC("OnScoreChangedRcp", RpcTarget.AllBuffered, score);
+    }
+
+    [PunRPC]
+    private void OnScoreChangedRcp(float score)
     {
         Drift = score;
         ValueChanged?.Invoke();

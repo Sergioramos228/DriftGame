@@ -42,6 +42,21 @@ public class Wheel : MonoBehaviour
         _collider.sidewaysFriction = _sideway;
     }
 
+    public void ApplyUpgrades(float suspension, float wheels)
+    {
+        float upgradeValue = wheels * 0.15f;
+        _stiffness += upgradeValue;
+        _sideway.stiffness = _stiffness;
+        _collider.sidewaysFriction = _sideway;
+        WheelFrictionCurve forwardFriction = _collider.forwardFriction;
+        forwardFriction.stiffness += upgradeValue;
+        _collider.forwardFriction = forwardFriction;
+        JointSpring suspensionSpring = _collider.suspensionSpring;
+        suspensionSpring.spring += suspension * 3000;
+        suspensionSpring.damper += suspension * 2000;
+        _collider.suspensionSpring = suspensionSpring;
+    }
+
     private void Update()
     {
         _collider.GetWorldPose(out _worldPosition, out _worldRotation);

@@ -9,6 +9,7 @@ public class RaceView : MonoBehaviour
     [SerializeField] private TMP_Text _timerSeconds;
     [SerializeField] private TMP_Text _circlesCurrent;
     [SerializeField] private TMP_Text _circlesMaximum;
+    [SerializeField] private RaceTimer _timer;
 
     private Race _race;
 
@@ -16,15 +17,19 @@ public class RaceView : MonoBehaviour
     {
         if (_race != null)
             SubscribeToRace(true);
+
+        _timer.TimeChanged += OnTimeChanged;
     }
 
     private void OnDisable()
     {
         if (_race != null)
             SubscribeToRace(false);
+
+        _timer.TimeChanged -= OnTimeChanged;
     }
 
-    public void ApplyTrace(Race trace)
+    public void ApplyRace(Race trace)
     {
         _race = trace;
         SubscribeToRace(true);
@@ -59,14 +64,12 @@ public class RaceView : MonoBehaviour
         {
             _race.LeaderboardChanged += OnLeaderboardChanged;
             _race.CirclesChanged += OnCirclesChanged;
-            _race.TimeChanged += OnTimeChanged;
             _race.CountPlayerChanged += OnPlayerCountChanged;
         }
         else
         {
             _race.LeaderboardChanged -= OnLeaderboardChanged;
             _race.CirclesChanged -= OnCirclesChanged;
-            _race.TimeChanged -= OnTimeChanged;
             _race.CountPlayerChanged -= OnPlayerCountChanged;
         }
     }

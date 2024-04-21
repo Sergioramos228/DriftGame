@@ -64,4 +64,11 @@ public class CarPhysic : MonoBehaviour
     {
         return Vector3.Angle(_car.velocity, _car.rotation * Vector3.forward);
     }
+
+    public void SetUpgrade(float engine, float wheels, float suspension)
+    {
+        _torque += engine * 300;
+        _backWheels.ApplyUpgrades(suspension, wheels);
+        _frontWheels.ApplyUpgrades(suspension, wheels);
+    }
 }

@@ -96,7 +96,7 @@ namespace Photon.Pun.UtilityScripts
             PhotonNetwork.LocalPlayer.CustomProperties.Remove(PlayerNumbering.RoomPlayerIndexedProp);
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnEnteredRoom(Player newPlayer)
         {
             this.RefreshData();
         }

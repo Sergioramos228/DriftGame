@@ -18,7 +18,7 @@ public class ColorPicker : MonoBehaviour
 
     public Color Color => _color;
 
-    private void Awake()
+    private void OnEnable()
     {
         _fillRects = new Dictionary<Slider, Image>
         {
@@ -27,32 +27,43 @@ public class ColorPicker : MonoBehaviour
             { _blue, _blue.fillRect.GetComponent<Image>() }
         };
 
-        _red.onValueChanged.AddListener(OnColorChanged);
-        _green.onValueChanged.AddListener(OnColorChanged);
-        _blue.onValueChanged.AddListener(OnColorChanged);
+        _red.onValueChanged.AddListener(OnColorRChanged);
+        _green.onValueChanged.AddListener(OnColorGChanged);
+        _blue.onValueChanged.AddListener(OnColorBChanged);
         _properties.Initialized += OnInitialized;
         _color = _shower.color;
-        ShowCurrentColor();
     }
 
-    private void OnColorChanged(float call)
+    private void OnDisable()
     {
-        _color.r = _red.value;
-        _color.g = _green.value;
-        _color.b = _blue.value;
+        _red.onValueChanged.RemoveListener(OnColorRChanged);
+        _green.onValueChanged.RemoveListener(OnColorGChanged);
+        _blue.onValueChanged.RemoveListener(OnColorBChanged);
+    }
+
+    private void OnColorRChanged(float redColor)
+    {
+        _color.r = redColor;
+        _properties.SetProperty(TypesOfPlayerProperties.ColorR, redColor);
         ShowCurrentColor();
-        _properties.SetProperty(TypesOfPlayerProperties.ColorR, _red.value);
-        _properties.SetProperty(TypesOfPlayerProperties.ColorG, _green.value);
-        _properties.SetProperty(TypesOfPlayerProperties.ColorB, _blue.value);
+    }
+    private void OnColorGChanged(float greenColor)
+    {
+        _color.g = greenColor;
+        _properties.SetProperty(TypesOfPlayerProperties.ColorG, greenColor);
+        ShowCurrentColor();
+    }
+    private void OnColorBChanged(float blueColor)
+    {
+        _color.b = blueColor;
+        _properties.SetProperty(TypesOfPlayerProperties.ColorB, blueColor);
+        ShowCurrentColor();
     }
 
     private void ShowCurrentColor()
     {
-        _red.value = _color.r;
         ChangeFillColor(_red, _color.r, _color.r * FillRectSameColor, _color.r * FillRectSameColor);
-        _green.value = _color.g;
         ChangeFillColor(_green, _color.g * FillRectSameColor, _color.g, _color.g * FillRectSameColor);
-        _blue.value = _color.b;
         ChangeFillColor(_blue, _color.b * FillRectSameColor, _color.b * FillRectSameColor, _color.b);
         _shower.color = _color;
         _showCase.material.color = _color;
@@ -61,8 +72,11 @@ public class ColorPicker : MonoBehaviour
     private void OnInitialized()
     {
         _color.r = _properties.Values[TypesOfPlayerProperties.ColorR];
+        _red.value = _color.r;
         _color.g = _properties.Values[TypesOfPlayerProperties.ColorG];
+        _green.value = _color.g;
         _color.b = _properties.Values[TypesOfPlayerProperties.ColorB];
+        _blue.value = _color.b;
         ShowCurrentColor();
     }
 

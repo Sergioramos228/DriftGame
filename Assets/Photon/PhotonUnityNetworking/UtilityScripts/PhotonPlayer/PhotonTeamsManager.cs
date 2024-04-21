@@ -215,7 +215,7 @@ namespace Photon.Pun.UtilityScripts
             }
         }
 
-        void IInRoomCallbacks.OnPlayerEnteredRoom(Player newPlayer)
+        void IInRoomCallbacks.OnEnteredRoom(Player newPlayer)
         {
             PhotonTeam team = newPlayer.GetPhotonTeam();
             if (team == null)

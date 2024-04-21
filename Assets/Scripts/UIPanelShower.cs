@@ -9,9 +9,11 @@ public class UIPanelShower : MonoBehaviour
     [SerializeField] private Canvas _finish;
     [SerializeField] private Canvas _lose;
     [SerializeField] private Canvas _menu;
+    [SerializeField] private Canvas _start;
     [SerializeField] private Canvas _endButtons;
     [SerializeField] private Button _menuButton;
     [SerializeField] private Button _returnGameButton;
+    [SerializeField] private RaceTimer _timer;
 
     private List<Canvas> _panels;
     private List<Canvas> _finishPanels;
@@ -26,7 +28,8 @@ public class UIPanelShower : MonoBehaviour
             _win,
             _finish,
             _lose,
-            _menu
+            _menu,
+            _start
         };
         _finishPanels = new List<Canvas>()
         {
@@ -34,28 +37,32 @@ public class UIPanelShower : MonoBehaviour
             _lose,
             _win
         };
+
+        ShowPanel(_start);
     }
 
     private void OnEnable()
     {
         _menuButton.onClick.AddListener(OnMenuButtonClick);
         _returnGameButton.onClick.AddListener(OnPlayButtonClick);
+        _timer.HasExitTime += OnExitTime;
     }
 
     private void OnDisable()
     {
         _menuButton.onClick.RemoveListener(OnMenuButtonClick);
         _returnGameButton.onClick.RemoveListener(OnPlayButtonClick);
+        _timer.HasExitTime -= OnExitTime;
     }
 
-    public void ApplyRace(Race race)
+    public void EnterRace(Race race)
     {
         if (_race != null)
             return;
 
         _race = race;
         race.WeFinished += OnFinishRace;
-        _race.HasExitTime += OnExitTime;
+        ShowPanel(_main);
     }
 
     private void OnExitTime()

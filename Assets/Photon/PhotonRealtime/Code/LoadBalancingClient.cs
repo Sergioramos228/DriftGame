@@ -3347,7 +3347,7 @@ namespace Photon.Realtime
                     }
                     else
                     {
-                        this.InRoomCallbackTargets.OnPlayerEnteredRoom(originatingPlayer);
+                        this.InRoomCallbackTargets.OnEnteredRoom(originatingPlayer);
                     }
                     break;
 
@@ -4001,7 +4001,7 @@ namespace Photon.Realtime
         /// If your game starts with a certain number of players, this callback can be useful to check the
         /// Room.playerCount and find out if you can start.
         /// </remarks>
-        void OnPlayerEnteredRoom(Player newPlayer);
+        void OnEnteredRoom(Player newPlayer);
 
         /// <summary>
         /// Called when a remote player left the room or became inactive. Check otherPlayer.IsInactive.
@@ -4379,13 +4379,13 @@ namespace Photon.Realtime
             this.client = client;
         }
 
-        public void OnPlayerEnteredRoom(Player newPlayer)
+        public void OnEnteredRoom(Player newPlayer)
         {
             this.client.UpdateCallbackTargets();
 
             foreach (IInRoomCallbacks target in this)
             {
-                target.OnPlayerEnteredRoom(newPlayer);
+                target.OnEnteredRoom(newPlayer);
             }
         }
 

@@ -3,11 +3,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TraceSelector : MonoBehaviour
+public class RaceSelector : MonoBehaviour
 {
     [SerializeField] private Button _nextButton;
     [SerializeField] private Button _previousButton;
-    [SerializeField] private TMP_Text _traceLabel;
+    [SerializeField] private TMP_Text _raceLabel;
 
     private int _lastTrace;
 
@@ -54,6 +54,6 @@ public class TraceSelector : MonoBehaviour
 
     private void UpdateLabel()
     {
-        _traceLabel.text = Current.ToString();
+        _raceLabel.text = Current.ToString();
     }
 }

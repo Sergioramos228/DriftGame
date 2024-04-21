@@ -1,18 +1,15 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
-public class Race : MonoBehaviour
+public class Race : MonoBehaviourPunCallbacks
 {
-    private const int SecondsInMinute = 60;
-    private const int Second = 1;
-
     [SerializeField] private List<RaceZone> _way;
     [SerializeField] private int _countOfCircles;
     [SerializeField] private List<RaceZone> _startPositions;
-    [SerializeField] private int _raceSeconds = 120;
 
     private List<Car> _cars;
     private RaceTracker _raceTracker;
@@ -20,17 +17,14 @@ public class Race : MonoBehaviour
     public int CountPlayers => _cars.Count;
     public int CountCircles => _countOfCircles;
 
-    public event Action<int, int> TimeChanged;
     public event Action<IEnumerable<Car>> LeaderboardChanged;
     public event Action<int> CirclesChanged;
     public event Action<int> CountPlayerChanged;
     public event Action<int> WeFinished;
-    public event Action HasExitTime;
 
     private void Awake()
     {
         _cars = new List<Car>();
-        StartCoroutine(Timer());
     }
 
     private void OnDestroy()
@@ -47,25 +41,6 @@ public class Race : MonoBehaviour
     {
         if (_raceTracker != null)
             _raceTracker.Check();
-    }
-
-    private IEnumerator Timer()
-    {
-        WaitForSeconds second = new WaitForSeconds(Second);
-        int seconds;
-        int minutes;
-        yield return null;
-
-        while (_raceSeconds > 0)
-        {
-            _raceSeconds -= Second;
-            seconds = _raceSeconds % SecondsInMinute;
-            minutes = (int)Math.Floor((decimal)_raceSeconds / SecondsInMinute);
-            TimeChanged?.Invoke(minutes, seconds);
-            yield return second;
-        }
-
-        HasExitTime?.Invoke();
     }
 
     public void Initialize(Car car)
