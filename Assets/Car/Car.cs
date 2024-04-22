@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using Photon.Pun;
+using Unity.VisualScripting;
+using Photon.Realtime;
 
 public class Car : MonoBehaviour
 {
@@ -16,7 +18,8 @@ public class Car : MonoBehaviour
     public int MyId { get; private set; }
     public bool IsMine { get; private set; }
     public string Name => _nameView.Name;
-    public Vector3 Body => _body.position;
+    public Vector3 Body => _body.IsUnityNull() ? Vector3.zero : _body.position;
+    public Player Owner { get; private set; }
 
     public event Action ValueChanged;
     public event Action<float> Finished;
@@ -24,6 +27,7 @@ public class Car : MonoBehaviour
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
+        Owner = _photonView.Owner;
         MyId = _photonView.ViewID;
         IsMine = _photonView.IsMine;
 

@@ -15,6 +15,7 @@ public class RaceTimer : MonoBehaviourPunCallbacks
     private int _minutes;
     private int _seconds;
     private PhotonView _photonView;
+    private Coroutine _current;
 
     public event Action<int, int> TimeChanged;
     public event Action HasExitTime;
@@ -32,8 +33,8 @@ public class RaceTimer : MonoBehaviourPunCallbacks
 
     public void Countdown()
     {
-        if (PhotonNetwork.IsMasterClient)
-            StartCoroutine(Timer());
+        if (PhotonNetwork.IsMasterClient && _current == null)
+            _current = StartCoroutine(Timer());
     }
 
     private IEnumerator Timer()

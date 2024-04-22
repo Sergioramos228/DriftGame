@@ -1,7 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,6 +52,20 @@ public class Race : MonoBehaviourPunCallbacks
         ApplyCar(car);
     }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        Car car = _cars.Where(car => car.Owner == otherPlayer).FirstOrDefault();
+
+        if (car == null)
+            return;
+
+        _cars.Remove(car);
+        _raceTracker.RemoveCar(car);
+        CountPlayerChanged?.Invoke(_cars.Count);
+        LeaderboardChanged?.Invoke(_cars);
+    }
+
     public void ApplyCar(Car car)
     {
         if (_cars.Contains(car))
@@ -59,8 +73,8 @@ public class Race : MonoBehaviourPunCallbacks
 
         _cars.Add(car);
         _raceTracker.ApplyCar(car);
-        LeaderboardChanged?.Invoke(_cars);
         CountPlayerChanged?.Invoke(_cars.Count);
+        LeaderboardChanged?.Invoke(_cars);
     }
 
     public void UpdateInfo()

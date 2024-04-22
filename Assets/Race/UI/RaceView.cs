@@ -36,7 +36,7 @@ public class RaceView : MonoBehaviour
         _leaderboard.Initialize(_race.CountPlayers);
         _circlesMaximum.text = _race.CountCircles.ToString();
     }
-    
+
     private void OnTimeChanged(int minutes, int seconds)
     {
         _timerMinutes.text = string.Format("{0:00}", minutes);

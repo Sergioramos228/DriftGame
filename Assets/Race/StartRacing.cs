@@ -55,12 +55,12 @@ public class StartRacing : MonoBehaviourPunCallbacks
 
     private void UpdateLabel()
     {
-        _label.text = "Игроки: ";
+        _label.text = "Р“РѕРЅС‰РёРєРё: ";
 
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
             _label.text = $"{_label.text}\n{player.Key} - {player.Value.NickName}";
 
-        _startRace.interactable = PhotonNetwork.CurrentRoom.Players.Count > 1 && PhotonNetwork.IsMasterClient;
+        _startRace.interactable = PhotonNetwork.CurrentRoom.Players.Count > 0 && PhotonNetwork.IsMasterClient;
     }
 
     private void OnStartRaceButtonClick()

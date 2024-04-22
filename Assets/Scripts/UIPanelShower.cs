@@ -78,6 +78,8 @@ public class UIPanelShower : MonoBehaviour
             ShowPanel(_lose);
         else
             ShowPanel(_finish);
+
+        _timer.HasExitTime -= OnExitTime;
     }
 
     private void OnMenuButtonClick()

@@ -41,6 +41,19 @@ public class RaceTracker
         AddCarToLeaderboard(car);
     }
 
+    public void RemoveCar(Car car)
+    {
+        CarRacingTracker observer = _observers.Where(obs => obs.Car == car).FirstOrDefault();
+
+        if (observer != null)
+        {
+            observer.Finished -= OnCarFinishedCircle;
+            _observers.Remove(observer);
+        }
+
+        _carsCircles.Remove(car);
+    }
+
     public int GetCarPosition(Car car)
     {
         return _leaderboard.IndexOf(car) + 1;
