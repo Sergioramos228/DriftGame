@@ -33,7 +33,7 @@ public class CarSpawner : MonoBehaviour
 
     private void OnCarFinished(float gold)
     {
-        _properties.SetProperty(TypesOfPlayerProperties.Gold, _properties.Values[TypesOfPlayerProperties.Gold] + gold);
+        _properties.AddGold(gold);
         _car.Finished -= OnCarFinished;
     }
 }

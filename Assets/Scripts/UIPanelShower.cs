@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class UIPanelShower : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class UIPanelShower : MonoBehaviour
     [SerializeField] private Button _menuButton;
     [SerializeField] private Button _returnGameButton;
     [SerializeField] private RaceTimer _timer;
+    [SerializeField] private TMP_Text _loseLabel;
 
     private List<Canvas> _panels;
     private List<Canvas> _finishPanels;
@@ -22,6 +24,7 @@ public class UIPanelShower : MonoBehaviour
 
     private void Awake()
     {
+        _loseLabel.text = "Вы последний! Получено x0.5 очков дрифта.";
         _panels = new List<Canvas>()
         {
             _main,
@@ -67,6 +70,7 @@ public class UIPanelShower : MonoBehaviour
 
     private void OnExitTime()
     {
+        _loseLabel.text = "Вы не успели! Получено 0 очков дрифта.";
         ShowPanel(_lose);
     }
 

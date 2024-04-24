@@ -30,7 +30,7 @@ public class ColorPicker : MonoBehaviour
         _red.onValueChanged.AddListener(OnColorRChanged);
         _green.onValueChanged.AddListener(OnColorGChanged);
         _blue.onValueChanged.AddListener(OnColorBChanged);
-        _properties.Initialized += OnInitialized;
+        _properties.Changed += OnInitialized;
         _color = _shower.color;
     }
 

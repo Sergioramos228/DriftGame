@@ -14,7 +14,7 @@ public class PlayerUpgrader : MonoBehaviour
 
     private void OnEnable()
     {
-        _properties.Initialized += OnUpgradesInitialized;
+        _properties.Changed += OnUpgradesInitialized;
 
         foreach (PlayerUpgradeView upgrade in _upgrades)
             upgrade.Upgraded += OnUpgradeRequest;
@@ -22,7 +22,7 @@ public class PlayerUpgrader : MonoBehaviour
 
     private void OnDisable()
     {
-        _properties.Initialized -= OnUpgradesInitialized;
+        _properties.Changed -= OnUpgradesInitialized;
 
         foreach (PlayerUpgradeView upgrade in _upgrades)
             upgrade.Upgraded -= OnUpgradeRequest;

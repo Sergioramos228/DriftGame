@@ -3,7 +3,6 @@ using Photon.Pun;
 using UnityEngine.UI;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
-using Unity.VisualScripting;
 
 public class MapLoader : MonoBehaviourPunCallbacks
 {

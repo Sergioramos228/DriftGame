@@ -8,7 +8,7 @@ public class PlayerProperties : MonoBehaviour
 
     public string Name { get; private set; }
     public IDictionary<TypesOfPlayerProperties, float> Values => _properties;
-    public event Action Initialized;
+    public event Action Changed;
 
     private void Awake()
     {
@@ -23,23 +23,14 @@ public class PlayerProperties : MonoBehaviour
             _properties.Add(property, value);
 
         PlayerPrefs.SetFloat(property.ToString(), value);
+        Changed?.Invoke();
     }
 
-    public void Temp_Greedisgood()
+    public void AddGold(float gold)
     {
-        SetProperty(TypesOfPlayerProperties.Gold, 900);
-        LoadProperties();
-        Initialize();
-    }
-
-    public void Temp_Clean()
-    {
-        foreach (TypesOfPlayerProperties property in Enum.GetValues(typeof(TypesOfPlayerProperties)))
-            PlayerPrefs.DeleteKey(property.ToString());
-
-        PlayerPrefs.Save();
-        LoadProperties();
-        Initialize();
+        _properties[TypesOfPlayerProperties.Gold] += gold;
+        PlayerPrefs.SetFloat(TypesOfPlayerProperties.Gold.ToString(), _properties[TypesOfPlayerProperties.Gold]);
+        Changed?.Invoke();
     }
 
     public void ChangeName(string name)
@@ -50,7 +41,7 @@ public class PlayerProperties : MonoBehaviour
 
     public void Initialize()
     {
-        Initialized?.Invoke();
+        Changed?.Invoke();
     }
 
     private void LoadProperties()

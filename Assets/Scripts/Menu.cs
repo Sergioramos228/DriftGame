@@ -24,6 +24,7 @@ public class Menu : MonoBehaviour
     public enum Screen
     {
         Connect,
+        Disconnect,
         Wait,
         Garage,
     }

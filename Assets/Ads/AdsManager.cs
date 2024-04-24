@@ -2,18 +2,26 @@ using UnityEngine;
 
 public class AdsManager : MonoBehaviour
 {
+    private const int Reward = 10;
 #if UNITY_ANDROID
-        string appKey = "1e1af448d";
+        private string appKey = "1e1af448d";
 #elif UNITY_IPHONE
         string appKey = "";
 #else
     string appKey = "unexpected_platform";
-    #endif
+#endif
+    [SerializeField] private Info _info;
+    [SerializeField] private PlayerProperties _properties;
 
     private void Start()
     {
         IronSource.Agent.validateIntegration();
         IronSource.Agent.init(appKey);
+    }
+
+    private void Awake()
+    {
+        LoadBanner();
     }
 
     private void OnEnable()
@@ -50,7 +58,7 @@ public class AdsManager : MonoBehaviour
 
     private void SDKInitialized()
     {
-        print("Sdk is initialized");
+        
     }
 
     private void OnApplicationPause(bool pause)
@@ -62,7 +70,7 @@ public class AdsManager : MonoBehaviour
 
     public void LoadBanner()
     {
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.TOP);
     }
 
     public void DestroyBanner()
@@ -85,30 +93,23 @@ public class AdsManager : MonoBehaviour
         {
             IronSource.Agent.showInterstitial();
         }
-        else
-        {
-            print("Interstitial not ready!");
-        }
     }
 
     #endregion
 
     #region rewarded
 
-    public void LoadRewarded()
-    {
-        IronSource.Agent.loadRewardedVideo();
-    }
-
     public void ShowRewarded()
     {
+        IronSource.Agent.loadRewardedVideo();
+
         if (IronSource.Agent.isRewardedVideoAvailable())
         {
             IronSource.Agent.showRewardedVideo();
         }
         else
         {
-            print("Rewarded not ready!");
+            _info.Show("Вознаграждения пока нет.");
         }
     }
 
@@ -198,7 +199,8 @@ public class AdsManager : MonoBehaviour
     // When using server-to-server callbacks, you may ignore this event and wait for the ironSource server callback.
     void RewardedVideoOnAdRewardedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
     {
-        print("Give rewards to player");
+        _info.Show("Вознаграждение получено");
+        _properties.AddGold(Reward);
     }
     // The rewarded video ad was failed to show.
     void RewardedVideoOnAdShowFailedEvent(IronSourceError error, IronSourceAdInfo adInfo)

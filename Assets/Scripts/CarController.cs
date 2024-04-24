@@ -106,7 +106,7 @@ public class CarController : MonoBehaviour
 
         while (true)
         {
-            _physic.GasTorque(_moveInput.y);
+            _physic.GasTorque(Mathf.Sign(_moveInput.y) * 1);
             _currentAngle = Mathf.Lerp(_currentAngle, _moveInput.x, _steeringPower * Time.deltaTime);
             _physic.ApplyDirection(_currentAngle);
             yield return delay;

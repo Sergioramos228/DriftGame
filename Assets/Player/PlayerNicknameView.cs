@@ -9,13 +9,13 @@ public class PlayerNicknameView : MonoBehaviour
     private void OnEnable()
     {
         _getter.onValueChanged.AddListener(OnNameChanged);
-        _properties.Initialized += OnNameInitialized;
+        _properties.Changed += OnNameInitialized;
     }
 
     private void OnDisable()
     {
         _getter.onValueChanged.RemoveListener(OnNameChanged);
-        _properties.Initialized -= OnNameInitialized;
+        _properties.Changed -= OnNameInitialized;
     }
 
     private void OnNameChanged(string newName)
